@@ -1,0 +1,25 @@
+{
+  "name": "board-app",
+  "version": "1.0.0",
+  "description": "particly",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html --public-url / --out-dir build"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "itshy",
+  "license": "ISC",
+  "dependencies": {
+    "babel-eslint": "^10.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/preset-react": "^7.0.0"
+  }
+}
