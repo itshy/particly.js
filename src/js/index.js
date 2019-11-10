@@ -1,24 +1,31 @@
-const minDistance = 125
-const minDistancePoints = 200
-const width = 800
-const height = 800
-const countPoints = 50
+const canvas = document.querySelector('#root-canvas')
+const ctx = canvas.getContext('2d')
+
+ctx.canvas.width = canvas.getBoundingClientRect().width
+ctx.canvas.height = canvas.getBoundingClientRect().height
+
+const minDistance = 200
+const minDistancePoints = 125
+const width = canvas.getBoundingClientRect().width
+const height = canvas.getBoundingClientRect().height
+const countPoints = 100
+const backgroundColor = '#252844'
+const pointsColor = '#ffffff'
 let points = []
 let lines = []
 
 for (let i = 0; i < countPoints; i++) {
   points.push({
-    top: Math.floor(Math.random() * 800),
-    left: Math.floor(Math.random() * 800),
+    left: Math.floor(Math.random() * width),
+    top: Math.floor(Math.random() * height),
     cosMoving: Math.random() * 1,
     directionX: ((Math.random() * 2 - 1) >= 0) ? 1 : -1,
     directionY: ((Math.random() * 2 - 1) >= 0) ? 1 : -1,
+    speed: Math.random() * 1.25 + 0.25,
   })
 }
 
 function initParticly() {
-  const canvas = document.querySelector('#root-canvas')
-  const ctx = canvas.getContext('2d')
   let mouseTop = 0;
   let mouseLeft = 0;
 
@@ -29,10 +36,11 @@ function initParticly() {
 
   function redraw() {
     lines = []
-    ctx.clearRect(0, 0, 800, 800);
+    ctx.fillStyle = backgroundColor
+    ctx.fillRect(0, 0, width, height);
 
     points.map((point, index) => {
-      const hypo = 1
+      const hypo = point.speed
       const cosCatHyp = point.cosMoving
       let xCat = 0
       let yCat = 0
@@ -44,15 +52,16 @@ function initParticly() {
       points[index].left = points[index].left + (xCat * points[index].directionX)
     })
 
-    points = points.filter(point => (point.top > 0) && (point.left > 0) && (point.top < width) && (point.left < height))
+    points = points.filter(point => (point.top > 0) && (point.left > 0) && (point.top < height) && (point.left < width))
 
     for (let i = points.length; i < countPoints; i++) {
       points.push({
-        top: Math.floor(Math.random() * 800),
-        left: Math.floor(Math.random() * 800),
+        left: Math.floor(Math.random() * width),
+        top: Math.floor(Math.random() * height),
         cosMoving: Math.random() * 1,
         directionX: ((Math.random() * 2 - 1) >= 0) ? 1 : -1,
         directionY: ((Math.random() * 2 - 1) >= 0) ? 1 : -1,
+        speed: Math.random() * 1.25 + 0.25,
       })
     }
 
@@ -95,7 +104,8 @@ function initParticly() {
       }
 
       ctx.beginPath()
-      ctx.arc(points[index].left, points[index].top, 2, 0, 2 * Math.PI)
+      ctx.fillStyle = pointsColor
+      ctx.arc(points[index].left, points[index].top, 1.5, 0, 1.5 * Math.PI)
       ctx.fill()
       ctx.stroke()
     })
@@ -104,8 +114,8 @@ function initParticly() {
       ctx.beginPath()
       ctx.moveTo(line.lineX1, line.lineY1)
       ctx.lineTo(line.lineX2, line.lineY2)
-      ctx.lineWidth = 1
-      ctx.strokeStyle = `rgba(0, 0, 0, ${line.opacity})`
+      ctx.lineWidth = 0.5
+      ctx.strokeStyle = `rgba(255, 255, 255, ${line.opacity})`
       ctx.stroke()
     })
   }
